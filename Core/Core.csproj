@@ -82,6 +82,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Exceptions\" />
     <Folder Include="IRepositories\" />
     <Folder Include="MessageResponse\" />
     <Folder Include="Models\" />
