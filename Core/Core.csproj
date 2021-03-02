@@ -70,6 +70,12 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRepositories\IUserRepository.cs" />
+    <Compile Include="MessageResponse\ServiceResponse.cs" />
+    <Compile Include="Models\User\LoginDto.cs" />
+    <Compile Include="Models\User\RoleDto.cs" />
+    <Compile Include="Models\User\UserDto.cs" />
+    <Compile Include="Models\User\UserRequestResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Exceptions\" />
-    <Folder Include="IRepositories\" />
-    <Folder Include="MessageResponse\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
