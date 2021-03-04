@@ -29,10 +29,13 @@ namespace Core.Models.User
 
     public class UserDetail
     {
+        [JsonProperty("user_id")]
         public int ID { get; set; }
         public int RoleID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+
+        [JsonIgnore]
         public string Password { get; set; }
         public string Gender { get; set; }
         public DataType CreatedAt { get; set; }

@@ -53,17 +53,32 @@ namespace Infrustructures.Repositories
             }
         }
 
-        public async Task<UserDetail> GetUser(UserRequest request)
+        public async Task<UserDetail> GetUser(int userID)
         {
             using (var dbContext = await MySqlServerRepository.OpenConnection())
             {
                 var sql = @"SELECT user.*, role.name as rolename, role.description as roledesctiption, role.prefix as roleprefix FROM user 
                             JOIN role on user.role_id = role.id 
-                            WHERE user.id = @ID";
+                            WHERE user.id = @UserID";
 
-                var result = (await dbContext.QueryAsync<UserDetail>(sql, request)).FirstOrDefault();
+                var result = (await dbContext.QueryAsync<UserDetail>(sql, new { @UserID = userID })).FirstOrDefault();
                 return result;
             }
         }
+        
+        public async Task<UserDetail> GetUser(UserRequest request)
+        {
+            using (var dbContext = await MySqlServerRepository.OpenConnection())
+            {
+                var sql = @"SELECT user.*, login.*, role.name as rolename, role.description as roledesctiption, role.prefix as roleprefix FROM user 
+                            JOIN role on user.role_id = role.id 
+                            JOIN login on user.id = login.user_id 
+                            WHERE login.email = @Email";
+
+                var result = (await dbContext.QueryAsync<UserDetail>(sql, new { @Email = request.Email})).FirstOrDefault();
+                return result;
+            }
+        }
+
     }
 }

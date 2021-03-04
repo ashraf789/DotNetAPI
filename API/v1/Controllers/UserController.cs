@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using API.Models;
+using Common;
 using Core.Exceptions;
 using Core.MessageResponse;
 using Core.Models.User;
@@ -47,8 +48,19 @@ namespace API.v1.Controllers
                     return Ok(new ResultDetail(ErrorConstants.Unknown, "User not found", Version, result));
                 }
 
-                //if(Hash)
-                return Ok(result);
+                JwtManager jwtManager = new JwtManager();
+                TokenRequest tokenRequest = new TokenRequest();
+                tokenRequest.UserID = result.ID;
+                tokenRequest.Name = result.Name;
+                tokenRequest.Email = result.Email;
+                tokenRequest.RoleID = result.RoleID;
+
+                var token = jwtManager.GenerateSecurityToken(tokenRequest);
+                token.UserDetail = result;
+
+                var response = new ResultDetail(ErrorConstants.Success, "Success", Version, token);
+                return Ok(response);
+
             }catch (Exception ex)
             {
                 throw new AppHttpException(HttpStatusCode.OK

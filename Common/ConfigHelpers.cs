@@ -33,5 +33,10 @@ namespace Common
             return hash.ToString().ToUpper();
         }
         #endregion
+
+        #region JWT token
+        public const string JWT_SECRET = "helloiamjwtsecret";
+        public const int JWT_EXPIRE_IN_MINUTES = 360; // 6 hours
+        #endregion
     }
 }

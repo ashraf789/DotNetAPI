@@ -13,9 +13,9 @@ namespace API
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            //AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }
