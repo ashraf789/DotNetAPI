@@ -1,4 +1,5 @@
 ﻿using Core.MessageResponse;
+using Core.Models;
 using Core.Models.User;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace Service.Services
     {
         Task<ServiceResponse<int>> CreateUser(CreateUserRequest request);
         Task<ServiceResponse<UserDetail>> GetUser(UserRequest request);
+        Task<ServiceResponse<UserDto>> GetUserInfo(UserInformationRequest request);
     }
 }

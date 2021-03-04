@@ -1,5 +1,6 @@
 ﻿using Core.IRepositories;
 using Core.MessageResponse;
+using Core.Models;
 using Core.Models.User;
 using Infrustructures.Repositories;
 using Service.Services;
@@ -29,6 +30,12 @@ namespace Service.ServiceImp
         {
             var result = await _repository.GetUser(request);
             return new ServiceResponse<UserDetail>(result, string.Empty, "success", false);
+        }
+
+        public async Task<ServiceResponse<UserDto>> GetUserInfo(UserInformationRequest request)
+        {
+            var result = await _repository.GetUserInfo(request);
+            return new ServiceResponse<UserDto>(result, string.Empty, "success", false);
         }
     }
 }

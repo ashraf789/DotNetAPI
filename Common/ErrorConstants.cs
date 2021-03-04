@@ -27,6 +27,7 @@ namespace Common
         public const int DB_DELETE_FAILED = DB_UPDATE_FAILED - 1;
         public const int DB_NOT_FOUND_ERROR = DB_DELETE_FAILED - 1;
         public const int USER_ALREADY_EXIST= DB_NOT_FOUND_ERROR - 1;
+        public const int WRONG_USER_AUTHENTICATION= USER_ALREADY_EXIST - 1;
         #endregion
 
         #region Error description
@@ -37,6 +38,7 @@ namespace Common
                 #region authentication
                 case DB_INSERTATION_FAILED: return "Failed to create new record";
                 case USER_ALREADY_EXIST: return "User already exist";
+                case WRONG_USER_AUTHENTICATION: return "Wrong user email or password.";
                 default: return "UNKNOWN Error";
                 #endregion
             }

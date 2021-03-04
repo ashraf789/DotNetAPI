@@ -17,6 +17,11 @@ namespace Core.Models.User
         public string Password { get; set; }
     }
 
+    public class UserInformationRequest
+    {
+        public string UserID { get; set; }
+    }
+
     public class CreateUserRequest
     {
         public int RoleID { get; set; }
@@ -38,7 +43,7 @@ namespace Core.Models.User
         [JsonIgnore]
         public string Password { get; set; }
         public string Gender { get; set; }
-        public DataType CreatedAt { get; set; }
+        [JsonIgnore]
         public int Status { get; set; }
         public string RoleName { get; set; }
         public string RoleDescription { get; set; }

@@ -48,6 +48,11 @@ namespace API.v1.Controllers
                     return Ok(new ResultDetail(ErrorConstants.Unknown, "User not found", Version, result));
                 }
 
+                if (!result.Password.ToUpper().Equals(ConfigHelpers.EncryptStringMD5(apiRequest.Password).ToUpper()))
+                {
+                    return Ok(new ResultDetail(ErrorConstants.WRONG_USER_AUTHENTICATION, ErrorConstants.ErrorDescription(ErrorConstants.WRONG_USER_AUTHENTICATION), Version, null));
+                }
+
                 JwtManager jwtManager = new JwtManager();
                 TokenRequest tokenRequest = new TokenRequest();
                 tokenRequest.UserID = result.ID;
@@ -117,6 +122,48 @@ namespace API.v1.Controllers
                 return Ok(response);
 
             }catch (Exception ex)
+            {
+                throw new AppHttpException(HttpStatusCode.OK
+                    , new ResultDetail(ErrorConstants.Unknown, ex.Message, Version));
+            }
+        }
+        #endregion
+
+        #region user information
+        /// <summary>
+        /// User Details
+        /// </summary>
+        /// <remarks>
+        /// User Information
+        /// </remarks>
+        /// <param name="apiRequest">apiRequest</param>
+        /// <returns>success or not</returns>
+        [Route("information"), HttpPost, Authorize]
+        public async Task<IHttpActionResult> Information([FromBody] UserInformationRequest apiRequest)
+        {
+            try
+            {
+                if (apiRequest == null)
+                {
+                    return Ok(new ResultDetail(ErrorConstants.InvalidPropertyValue, "Empty required fields", null));
+                }
+
+                if (string.IsNullOrEmpty(apiRequest.UserID))
+                {
+                    return Ok(new ResultDetail(ErrorConstants.InvalidPropertyValue, "UserID is required", null));
+                }
+
+                var result = (await RespositoryService.UserService.GetUserInfo(apiRequest)).ResponseObject;
+                if (result == null)
+                {
+                    return Ok(new ResultDetail(ErrorConstants.Unknown, "User not found", Version, result));
+                }
+
+                var response = new ResultDetail(ErrorConstants.Success, "Success", Version, result);
+                return Ok(response);
+
+            }
+            catch (Exception ex)
             {
                 throw new AppHttpException(HttpStatusCode.OK
                     , new ResultDetail(ErrorConstants.Unknown, ex.Message, Version));

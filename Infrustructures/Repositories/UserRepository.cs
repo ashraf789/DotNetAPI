@@ -26,7 +26,7 @@ namespace Infrustructures.Repositories
                     return ErrorConstants.USER_ALREADY_EXIST;
                 }
 
-                var sql = @"INSERT INTO `user`(`role_id`, `name`, `gender`, `status`) 
+                var sql = @"INSERT INTO `user`(`roleid`, `name`, `gender`, `status`) 
                                 VALUES (@RoleId, @Name, @Gender, @Status);
                                 select last_insert_id();";
 
@@ -38,7 +38,7 @@ namespace Infrustructures.Repositories
                     return ErrorConstants.DB_NOT_FOUND_ERROR;
                 }
 
-                var sqlCreateLogin = @"INSERT INTO `login`(`email`, `password`, `user_id`) 
+                var sqlCreateLogin = @"INSERT INTO `login`(`email`, `password`, `userid`) 
                             VALUES (@Email, @Password, @UserID);
                             select last_insert_id()";
 
@@ -53,26 +53,13 @@ namespace Infrustructures.Repositories
             }
         }
 
-        public async Task<UserDetail> GetUser(int userID)
-        {
-            using (var dbContext = await MySqlServerRepository.OpenConnection())
-            {
-                var sql = @"SELECT user.*, role.name as rolename, role.description as roledesctiption, role.prefix as roleprefix FROM user 
-                            JOIN role on user.role_id = role.id 
-                            WHERE user.id = @UserID";
-
-                var result = (await dbContext.QueryAsync<UserDetail>(sql, new { @UserID = userID })).FirstOrDefault();
-                return result;
-            }
-        }
-        
         public async Task<UserDetail> GetUser(UserRequest request)
         {
             using (var dbContext = await MySqlServerRepository.OpenConnection())
             {
-                var sql = @"SELECT user.*, login.*, role.name as rolename, role.description as roledesctiption, role.prefix as roleprefix FROM user 
-                            JOIN role on user.role_id = role.id 
-                            JOIN login on user.id = login.user_id 
+                var sql = @"SELECT user.*, login.*, role.name as rolename, role.description as roledescription, role.prefix as roleprefix FROM user 
+                            JOIN role on user.roleid = role.id 
+                            JOIN login on user.id = login.userid 
                             WHERE login.email = @Email";
 
                 var result = (await dbContext.QueryAsync<UserDetail>(sql, new { @Email = request.Email})).FirstOrDefault();
@@ -80,5 +67,16 @@ namespace Infrustructures.Repositories
             }
         }
 
+        public async Task<UserDto> GetUserInfo(UserInformationRequest request)
+        {
+            using (var dbContext = await MySqlServerRepository.OpenConnection())
+            {
+                var sql = @"SELECT * FROM user 
+                            WHERE user.id = @UserID";
+
+                var result = (await dbContext.QueryAsync<UserDto>(sql, new { @UserID = request.UserID })).FirstOrDefault();
+                return result;
+            }
+        }
     }
 }

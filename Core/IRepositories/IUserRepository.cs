@@ -14,5 +14,9 @@ namespace Core.IRepositories
         Task<int> CreateUser(CreateUserRequest request);
         Task<UserDetail> GetUser(UserRequest request);
         #endregion
+
+        #region user information
+        Task<UserDto> GetUserInfo(UserInformationRequest request);
+        #endregion
     }
 }
